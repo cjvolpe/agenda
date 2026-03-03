@@ -1,60 +1,56 @@
-import {useState} from "react";
 import type {Task} from '../library/types.ts'
+import '../App.css'
 
 export default function TaskForm() {
-    const [task, setTask] = useState<Task>(
-        
-    );
-    const handleChange = (e) => {
-        const {name, value} = e.target;
-        setTask({
-            ...task,
-            [name]: value
+    const addTaskAction = (formData: FormData) => {
 
-        });
-        console.log(task);
+        const newTask: Task = {
+            name: formData.get('taskName') as string,
+            description: formData.get('taskDescription') as string,
+            dueDate: formData.get('taskDueDate') as Date,
+        };
+        console.log(newTask);
     };
 
 
     return (
-        <div>
-            <form>
+        <div className={"tasks-form"}>
+            <form action={addTaskAction}>
                 <label>Enter the task name:
+                    <br />
                     <input
                         type="text"
                         name="taskName"
-                        value={task.name}
                         placeholder="Type here"
-                        onChange={handleChange}
+
                     />
-
-
                 </label>
+                <br />
 
                 <label>Describe the task:
-                    <input
+                    <br />
+                    <textarea
                         type="text"
                         name="taskDescription"
-                        value={task.description}
                         placeholder="Type here"
-                        onChange={handleChange}
+
                     />
-
-
                 </label>
+                <br />
 
                 <label>When is this task due:
+                    <br />
                     <input
-                        type="text"
+                        type="date"
                         name="taskDueDate"
-                        value={task.description}
                         placeholder="Type here"
-                        onChange={handleChange}
+
                     />
-
-
                 </label>
+                <br />
+                <button type="submit">Submit</button>
             </form>
         </div>
     )
 }
+

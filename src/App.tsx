@@ -9,9 +9,9 @@ function App() {
     <>
       <div className="tasks-tab">
       {/*  left side */}
-          <TaskForm></TaskForm>
+         <TaskForm />
         <div className="Tasks">
-          <TaskElement></TaskElement>
+          <TaskElement />
         </div>
       </div>
 

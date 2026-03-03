@@ -1,6 +1,6 @@
 import  './App.css'
 import TaskForm from "./components/TaskForm.tsx";
-import Task from "./components/Task.tsx";
+import TaskElement from "./components/TaskElement.tsx";
 
 function App() {
 
@@ -11,7 +11,7 @@ function App() {
       {/*  left side */}
           <TaskForm></TaskForm>
         <div className="Tasks">
-          <Task></Task>
+          <TaskElement></TaskElement>
         </div>
       </div>
 

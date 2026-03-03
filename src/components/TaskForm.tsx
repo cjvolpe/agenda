@@ -1,17 +1,18 @@
 import {useState} from "react";
+import type {Task} from '../library/types.ts'
 
 export default function TaskForm() {
-    const [Task, setTask] = useState(
+    const [task, setTask] = useState<Task>(
         
     );
     const handleChange = (e) => {
         const {name, value} = e.target;
         setTask({
-            ...Task,
+            ...task,
             [name]: value
 
         });
-        console.log(Task);
+        console.log(task);
     };
 
 
@@ -22,7 +23,7 @@ export default function TaskForm() {
                     <input
                         type="text"
                         name="taskName"
-                        value={Task.name}
+                        value={task.name}
                         placeholder="Type here"
                         onChange={handleChange}
                     />
@@ -34,7 +35,7 @@ export default function TaskForm() {
                     <input
                         type="text"
                         name="taskDescription"
-                        value={Task.description}
+                        value={task.description}
                         placeholder="Type here"
                         onChange={handleChange}
                     />
@@ -46,7 +47,7 @@ export default function TaskForm() {
                     <input
                         type="text"
                         name="taskDueDate"
-                        value={Task.description}
+                        value={task.description}
                         placeholder="Type here"
                         onChange={handleChange}
                     />

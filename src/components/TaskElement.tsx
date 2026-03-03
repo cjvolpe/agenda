@@ -1,6 +1,6 @@
 
 
-export default function Task(){
+export default function TaskElement(){
     return(
         <div>
 

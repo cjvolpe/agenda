@@ -1,25 +1,24 @@
-import  './New.css'
+import './New.css'
 import TaskForm from "../components/TaskForm.tsx";
-import TaskElement from "../components/TaskElement.tsx";
+import {type NavigateFunction, useNavigate} from "react-router";
 
 function New() {
+    const navigate: NavigateFunction = useNavigate();
+
+    return (
+        <>
+            <div className="tasks-tab">
+                {/*  left side */}
+                <TaskForm/>
+                <div className="Tasks">
+                </div>
+                <button onClick={() => navigate("/")}>Back</button>
+
+            </div>
 
 
-  return (
-    <>
-      <div className="tasks-tab">
-      {/*  left side */}
-         <TaskForm />
-        <div className="Tasks">
-          <TaskElement />
-        </div>
-      </div>
-
-      <div className="CalendarProbably">
-      {/*  right side */}
-      </div>
-    </>
-  )
+        </>
+    )
 }
 
 export default New

@@ -1,24 +1,30 @@
 import {type NavigateFunction, useNavigate} from "react-router";
 import {useState} from "react";
+import TaskBox from "../components/TaskBox";
 import "./Home.css"
 
 export default function Home() {
     const navigate: NavigateFunction = useNavigate();
-    const [currentDate, setCurrentDate] = useState(new Date());
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split("T")[0]);
+    const formatLocalHeader = (dateStr: string) => {
+        const [year, month, day] = dateStr.split('-').map(Number);
+        return new Date(year, month - 1, day).toDateString();
+    };
 
     return (<>
         <div className="home">
             <div className="date">
                 <form>
-                    <label>Tasks for: {currentDate.toDateString()}</label>
+                    <label>Tasks for: { formatLocalHeader(currentDate)}</label>
                     <input
                         type="date"
-                        onChange={() => setCurrentDate(currentDate)}
-                        value={`${currentDate.getFullYear()}-${(currentDate.getMonth()+1).toString().padStart(2,"0")}-${currentDate.getDate()}`}
+                        onChange={(e) => setCurrentDate(e.target.value)}
+                        value={currentDate}
                     />
                 </form>
 
             </div>
+            <TaskBox date={currentDate}/>
             <button onClick={() => navigate("/new")}>Add New Task</button>
 
         </div>

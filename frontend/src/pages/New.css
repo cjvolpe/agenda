@@ -9,12 +9,12 @@ body{
 }
 
 .tasks-tab{
-    width:32vw;
-    height:100vh;
-    background-color:gray;
-    border-right: 4px solid black;
     display: flex;
     flex-direction: column;
+    margin-top:64px;
+    border-radius: 16px;
+    border: black solid 1px;
+    padding: 16px;
 }
 
 .tasks-form{

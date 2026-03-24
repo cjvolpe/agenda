@@ -2,14 +2,22 @@ import type {Task} from '../library/types.ts'
 import '../pages/New.css'
 
 export default function TaskForm() {
-    const addTaskAction = (formData: FormData) => {
+    const addTaskAction = async (formData: FormData) => {
 
         const newTask: Task = {
             name: formData.get('taskName') as string,
             description: formData.get('taskDescription') as string,
             dueDate: formData.get('taskDueDate') as Date,
         };
-        console.log(newTask);
+
+        await fetch("http://localhost:8000/task",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newTask),
+        });
+
     };
 
 

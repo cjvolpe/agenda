@@ -7,6 +7,7 @@ import './bootstrap.js';
 import Fastify, { type FastifyInstance } from 'fastify'
 import { setupRoutes } from "./routes.js";
 import supabasePlugin from "./supabase.js";
+import cors from '@fastify/cors';
 
 // internal
 
@@ -21,14 +22,19 @@ const fastify: FastifyInstance = Fastify({
 
 
 fastify.get('/', async (_request, _reply) => {
+
     return { hello: 'world' }
 })
 
 const start = async () => {
     try {
-        await fastify.register(supabasePlugin);
+        await fastify.register(cors,{
+            origin: "*",
+            methods: ["GET", "POST"],
+        });
+        await fastify.register(supabasePlugin)
         setupRoutes(fastify);
-        await fastify.listen({ port: 5173 })
+        await fastify.listen({ port: 8000 })
     } catch (err) {
         fastify.log.error(err)
         process.exit(1)
@@ -37,4 +43,5 @@ const start = async () => {
 
 }
 start()
+
 

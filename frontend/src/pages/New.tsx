@@ -1,8 +1,8 @@
-import  './App.css'
-import TaskForm from "./components/TaskForm.tsx";
-import TaskElement from "./components/TaskElement.tsx";
+import  './New.css'
+import TaskForm from "../components/TaskForm.tsx";
+import TaskElement from "../components/TaskElement.tsx";
 
-function App() {
+function New() {
 
 
   return (
@@ -22,4 +22,4 @@ function App() {
   )
 }
 
-export default App
+export default New

@@ -1,5 +1,5 @@
 import type {Task} from '../library/types.ts'
-import '../App.css'
+import '../pages/New.css'
 
 export default function TaskForm() {
     const addTaskAction = (formData: FormData) => {

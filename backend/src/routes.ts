@@ -2,8 +2,9 @@
 
 // external
 import type {FastifyInstance} from "fastify";
-import type {Task} from "../../frontend/src/library/types.ts";
-import {mock} from "node:test";
+import type {BaseReply, Failure, ReplyConfig, Task} from "../../frontend/src/library/types.ts";
+import type {Handle} from "../../frontend/src/library/types.ts"
+import type {Process} from "../../frontend/src/library/types.ts";
 
 // internal
 
@@ -13,30 +14,67 @@ export function setupRoutes(server: FastifyInstance) {
         Querystring: { date?: string };
         Reply: any[] | { error: string };
     }>("/task", async (request, reply) => {
-        const {date} = request.query;
+        const {reply: result, code} = await packageResponse(() => handleGetTasks(request.query.date));
+        reply.status(code).send(result);
+
+    });
+    server.post<{
+        Body: Task;
+        Reply: BaseReply<void>;
+
+    }>("/task", async (req, res) => {
+        const {reply, code} = await packageResponse(() => handleNewTask(req.body));
+        res.status(code).send(reply);
+    });
+
+
+    async function handleNewTask(req: Task): Promise<Handle> {
+        const {name, description, dueDate} = req;
+        const {data, error} = await server.supabase.from("task").insert([{
+            task_name: name,
+            description: description,
+            due_date: dueDate
+        }]).select();
+        if (error) {
+            return {success: false, error: error, code: 500};
+        }
+        return {success: true, data: data};
+    }
+
+    async function handleGetTasks(date?: string): Promise<Handle> {
         let query = server.supabase.from("task").select('*');
         if (date) {
             query = query.eq('due_date', date);
         }
         const {data, error} = await query;
         if (error) {
-            return reply.status(500).send(error);
+            return {success: false, error: error, code: 500};
         }
-        return data;
-    });
-    server.post<{
-        Body: Task;
-    }>("/task", async (request, reply) => {
-        const {name, description, dueDate} = request.body;
-        const {data, error} = await server.supabase.from("task").insert([{
-            task_name: name,
-            description: description,
-            due_date: dueDate
-        }]).select();
+        return {success: true, data: data};
+    }
 
-        if (error) {
-            return reply.status(500).send(error);
+    async function packageResponse<O>(handler: () => Promise<Process<O>>,): Promise<ReplyConfig<O>> {
+        const result = await handler();
+
+        if (result.success) {
+            return {
+                reply: {...result},
+                code: 200
+            };
         }
-        return reply.status(201).send(data);
-    });
+
+        if (result.code !== undefined) {
+            return {
+                reply: {
+                    success: false,
+                    error: result.error.message,
+                    message: result.error.message,
+                },
+                code: result.code
+            };
+        }
+
+        throw result.error;
+
+    }
 }
